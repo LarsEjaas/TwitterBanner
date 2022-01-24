@@ -60,9 +60,9 @@ async function drawBanner() {
   images.forEach((image) => promiseArray.push(Jimp.read(image)));
 
   Promise.all(promiseArray).then(([banner, imageOne, imageTwo, imageThree]) => {
-    banner.composite(imageOne, 965, 60);
-    banner.composite(imageTwo, 1073, 60);
-    banner.composite(imageThree, 1181, 60);
+    banner.composite(imageOne, 942, 62);
+    banner.composite(imageTwo, 1062, 62);
+    banner.composite(imageThree, 1182, 62);
     banner.write("1500x500.png", function () {
       uploadBanner();
     });
