@@ -42,7 +42,7 @@ async function saveAvatar(user, path) {
     '<svg><rect x="0" y="0" width="96" height="96" rx="48" ry="48"/></svg>'
   );
 
-  console.log(`Retrieving avatar...`, rect);
+  console.log(`Retrieving avatar...`);
   const response = await axios({
     url: user.profile_image_url_https,
     responseType: "arraybuffer",
