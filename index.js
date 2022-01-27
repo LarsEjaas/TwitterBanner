@@ -6,6 +6,74 @@ import fs from "fs";
 import Jimp from "jimp";
 import sharp from "sharp";
 
+const numberOfFollowers = 3;
+const widthHeightFollowerImage = 96;
+
+async function uploadBanner() {
+  console.log(`Uploading to twitter...`);
+  const base64 = await fs.readFileSync("./tmp/1500x500_final.png", {
+    encoding: "base64",
+  });
+  await twitterClient.accountsAndUsers.accountUpdateProfileBanner({
+    banner: base64,
+  });
+}
+
+async function createBanner() {
+  const banner = await Jimp.read(`1500x500.jpg`);
+  // build banner
+  console.log(`Adding followers...`);
+  await Promise.all(
+    [...Array(numberOfFollowers)].map((_, i) => {
+      return new Promise(async (resolve) => {
+        const image = await Jimp.read(`./tmp/${i}.png`);
+        const x = 942 + i * (widthHeightFollowerImage + 24);
+        console.log(`Appending image ${i} with x=${x}`);
+        banner.composite(image, x, 62);
+        resolve();
+      });
+    })
+  );
+  await banner.writeAsync("./tmp/1500x500_final.png");
+}
+
+async function saveAvatar(user, path) {
+  const roundedCorners = Buffer.from(
+    '<svg><rect x="0" y="0" width="96" height="96" rx="48" ry="48"/></svg>'
+  );
+
+  console.log(`Retrieving avatar...`, rect);
+  const response = await axios({
+    url: user.profile_image_url_https,
+    responseType: "arraybuffer",
+  });
+
+  await sharp(response.data)
+    .resize(widthHeightFollowerImage, widthHeightFollowerImage)
+    .composite([
+      {
+        input: roundedCorners,
+        blend: "dest-in",
+      },
+    ])
+    .toFile(path);
+}
+
+async function getImagesOfLatestFollowers() {
+  console.log(`Retrieving followers...`);
+  try {
+    const data = await twitterClient.accountsAndUsers.followersList({
+      screen_name: process.env.TWITTER_HANDLE,
+      count: numberOfFollowers,
+    });
+    await Promise.all(
+      data.users.map((user, index) => saveAvatar(user, `./tmp/${index}.png`))
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const twitterClient = new TwitterClient({
   apiKey: process.env.API_KEY,
   apiSecret: process.env.API_SECRET,
@@ -14,70 +82,13 @@ const twitterClient = new TwitterClient({
 });
 
 async function getLatestFollowers() {
-  const data = await twitterClient.accountsAndUsers.followersList({
-    screen_name: process.env.TWITTER_HANDLE,
-    count: 3,
-  });
-
-  let count = 0;
-  const downloads = new Promise((resolve, reject) => {
-    data.users.forEach((user, index, arr) => {
-      downloadImage(user.profile_image_url_https, `${index}.png`).then(() => {
-        count++;
-        if (count === arr.length) resolve();
-      });
-    });
-  });
-
-  downloads.then(() => {
-    drawBanner();
-  });
-}
-
-async function downloadImage(url, image_path) {
-  await axios({
-    url,
-    responseType: "arraybuffer",
-  }).then(
-    (response) =>
-      new Promise((resolve, reject) => {
-        const rect = Buffer.from(
-          '<svg><rect x="0" y="0" width="96" height="96" rx="48" ry="48"/></svg>'
-        );
-        resolve(
-          sharp(response.data)
-            .resize(96, 96)
-            .overlayWith(rect, { cutout: true })
-            .toFile(image_path)
-        );
-      })
-  );
-}
-
-async function drawBanner() {
-  const images = ["1500x500.jpg", "0.png", "1.png", "2.png"];
-  const promiseArray = [];
-  images.forEach((image) => promiseArray.push(Jimp.read(image)));
-
-  Promise.all(promiseArray).then(([banner, imageOne, imageTwo, imageThree]) => {
-    banner.composite(imageOne, 942, 62);
-    banner.composite(imageTwo, 1062, 62);
-    banner.composite(imageThree, 1182, 62);
-    banner.write("1500x500.png", function () {
-      uploadBanner();
-    });
-  });
-}
-
-async function uploadBanner() {
-  const base64 = await fs.readFileSync("1500x500.png", { encoding: "base64" });
-  await twitterClient.accountsAndUsers
-    .accountUpdateProfileBanner({
-      banner: base64,
-    })
-    .then((d) => {
-      console.log("Upload to Twitter done");
-    });
+  await getImagesOfLatestFollowers();
+  await createBanner();
+  await uploadBanner();
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ status: "ok" }),
+  };
 }
 
 getLatestFollowers();

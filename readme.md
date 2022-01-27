@@ -62,19 +62,19 @@ There are various places you can run a project like this, but I choose Heroku du
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
 1. Get a free API Key for your Twitter profile at [https://developer.twitter.com/](https://developer.twitter.com/)
 
-2. Clone the repo
+2. Apply for Elevated Access to the Twitter API. Don't worry: this is free.
+
+3. Clone the repo
    ```sh
    git clone https://github.com/LarsEjaas/TwitterBanner.git
    ```
-3. Install NPM packages
+4. Install NPM packages
    ```sh
    npm install
    ```
-4. Create an `.env` file and add the variables listed in `.env.example` replacing the values for the data from the API.
+5. Create an `.env` file and add the variables listed in `.env.example` replacing the values for the data from the API.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -98,13 +98,19 @@ Lars Ejaas - [@twitter](https://twitter.com/larsEjaas) - [Write to me directly o
 
 ## Acknowledgments
 
-The code for this project was more or less copied directly from Chris Bongers' article on daily-dev-tips.com:
+The code for this project was inspired by code from several sources. Mainly:
+
+[Making dynamic Twitter header](https://ppolivka.com/posts/dynamic-twitter-header)
+
+and
 
 [How I made my Twitter header dynamic](https://daily-dev-tips.com/posts/how-i-made-my-twitter-header-dynamic/)
 
-Please follow him on Twitter if you like this articles and content:
+Please follow Pavel Polívka and Chris Bonkers on Twitter if you like their articles and content:
 
-[@DailyDevTips1](https://twitter.com/DailyDevTips1)
+[Chris Bonkers](https://twitter.com/DailyDevTips1)
+
+[Pavel Polívka](https://twitter.com/pavel_polivka)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
