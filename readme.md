@@ -46,11 +46,11 @@
 <br />
 <br />
 
-Twitter has an API that makes it possible to pull data like tweets and followers.
+The Twitter API enables programmers to access data from their Twitter profile directly. Types of data includes: Tweets, Direct Messages, Spaces, Lists, users, and more.
 
-This project leverage the API to interact with your list of followers and create an interactive banner that will display your 3 most recent followers.
+This project will leverage the API to interact with your list of followers to create an interactive banner that displays the 4 most recent followers on your Twitter profile.
 
-This banner utilizes a serverless Node.js function that pulls the 3 most recent followers once every minute. Afterward, the function will overlay the follower's profile picture and upload the updated banner to your profile.
+The banner utilizes a serverless Node.js function that pulls the 4 most recent followers once every minute. Thereafter, the function will overlay the follower's profile picture to the banner image and upload the updated banner to your profile.
 
 There are various places you can run a project like this, but I choose Heroku due to their generous free tier limit.
 
@@ -74,7 +74,7 @@ There are various places you can run a project like this, but I choose Heroku du
    ```sh
    npm install
    ```
-5. Create an `.env` file and add the variables listed in `.env.example` replacing the values for the data from the API.
+5. Create an `.env` file and add the variables listed in `.env.example` replacing the values with the keys from the API.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -82,7 +82,7 @@ There are various places you can run a project like this, but I choose Heroku du
 
 ## License
 
-This project comes with no license. Feel free to shamelessly copy everything...
+This project comes with no license. Feel free to clone the project and modify it to your liking.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -108,7 +108,7 @@ and
 
 Please follow Pavel Polívka and Chris Bonkers on Twitter if you like their articles and content:
 
-[Chris Bonkers](https://twitter.com/DailyDevTips1)
+[Chris Bongers](https://twitter.com/DailyDevTips1)
 
 [Pavel Polívka](https://twitter.com/pavel_polivka)
 

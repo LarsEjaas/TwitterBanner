@@ -3,38 +3,44 @@ dotenv.config();
 import { TwitterClient } from "twitter-api-client";
 import axios from "axios";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import Jimp from "jimp";
 import sharp from "sharp";
 
-const numberOfFollowers = 3;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const numberOfFollowers = 4;
 const widthHeightFollowerImage = 96;
 
 async function uploadBanner() {
-  console.log(`Uploading to twitter...`);
-  const base64 = await fs.readFileSync("./tmp/1500x500_final.png", {
+  console.log(`Base64 encoding finalized banner...`);
+  const base64 = await fs.readFileSync(`${__dirname}/tmp/1500x500_final.png`, {
     encoding: "base64",
   });
+  console.log(`Uploading to twitter...`);
   await twitterClient.accountsAndUsers.accountUpdateProfileBanner({
     banner: base64,
   });
 }
 
 async function createBanner() {
-  const banner = await Jimp.read(`1500x500.jpg`);
+  const banner = await Jimp.read(`${__dirname}/1500x500.jpg`);
   // build banner
   console.log(`Adding followers...`);
   await Promise.all(
     [...Array(numberOfFollowers)].map((_, i) => {
       return new Promise(async (resolve) => {
-        const image = await Jimp.read(`./tmp/${i}.png`);
+        const image = await Jimp.read(`${__dirname}/tmp/${i}.png`);
         const x = 942 + i * (widthHeightFollowerImage + 24);
         console.log(`Appending image ${i} with x=${x}`);
-        banner.composite(image, x, 62);
+        banner.composite(image, x, 202);
         resolve();
       });
     })
   );
-  await banner.writeAsync("./tmp/1500x500_final.png");
+  await banner.writeAsync(`${__dirname}/tmp/1500x500_final.png`);
 }
 
 async function saveAvatar(user, path) {
@@ -67,7 +73,9 @@ async function getImagesOfLatestFollowers() {
       count: numberOfFollowers,
     });
     await Promise.all(
-      data.users.map((user, index) => saveAvatar(user, `./tmp/${index}.png`))
+      data.users.map((user, index) =>
+        saveAvatar(user, `${__dirname}/tmp/${index}.png`)
+      )
     );
   } catch (err) {
     console.log(err);
