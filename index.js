@@ -15,11 +15,11 @@ const numberOfFollowers = 4;
 const widthHeightFollowerImage = 96;
 
 async function uploadBanner() {
-  console.log(`Base64 encoding finalized banner...`);
+  console.info(`Base64 encoding finalized banner...`);
   const base64 = await fs.readFileSync(`${__dirname}/tmp/1500x500_final.png`, {
     encoding: "base64",
   });
-  console.log(`Uploading to twitter...`);
+  console.info(`Uploading to twitter...`);
   await twitterClient.accountsAndUsers.accountUpdateProfileBanner({
     banner: base64,
   });
@@ -28,13 +28,13 @@ async function uploadBanner() {
 async function createBanner() {
   const banner = await Jimp.read(`${__dirname}/1500x500.jpg`);
   // build banner
-  console.log(`Adding followers...`);
+  console.info(`Adding followers...`);
   await Promise.all(
     [...Array(numberOfFollowers)].map((_, i) => {
       return new Promise(async (resolve) => {
         const image = await Jimp.read(`${__dirname}/tmp/${i}.png`);
         const x = 942 + i * (widthHeightFollowerImage + 24);
-        console.log(`Appending image ${i} with x=${x}`);
+        console.info(`Appending image ${i} with x=${x}`);
         banner.composite(image, x, 202);
         resolve();
       });
@@ -48,7 +48,7 @@ async function saveAvatar(user, path) {
     '<svg><rect x="0" y="0" width="96" height="96" rx="48" ry="48"/></svg>'
   );
 
-  console.log(`Retrieving avatar...`);
+  console.info(`Retrieving avatar...`);
   const response = await axios({
     url: user.profile_image_url_https,
     responseType: "arraybuffer",
@@ -66,19 +66,20 @@ async function saveAvatar(user, path) {
 }
 
 async function getImagesOfLatestFollowers() {
-  console.log(`Retrieving followers...`);
+  console.info(`Retrieving followers...`);
   try {
     const data = await twitterClient.accountsAndUsers.followersList({
       screen_name: process.env.TWITTER_HANDLE,
       count: numberOfFollowers,
     });
+    console.info(`Retrieving follower avatars...`);
     await Promise.all(
       data.users.map((user, index) =>
         saveAvatar(user, `${__dirname}/tmp/${index}.png`)
       )
     );
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -90,6 +91,10 @@ const twitterClient = new TwitterClient({
 });
 
 async function getLatestFollowers() {
+  console.info(
+    "Starting getLatest follower script at",
+    Date(Date.now()).toString()
+  );
   await getImagesOfLatestFollowers();
   await createBanner();
   await uploadBanner();
