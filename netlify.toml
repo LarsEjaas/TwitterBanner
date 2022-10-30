@@ -4,6 +4,8 @@
   # if one has been set, or the root directory if
   # a base hasn’t been set.
   directory = "functions/"
+  # include all images
+  included_files = ["functions/updateTwitterBanner/**"]
 
 [functions."updateTwitterBanner"]
 schedule = "@hourly"  

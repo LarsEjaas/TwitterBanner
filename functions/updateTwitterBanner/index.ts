@@ -22,7 +22,7 @@ const widthHeightFollowerImage = 96;
 const uploadBanner = async () => {
   console.info(`Base64 encoding finalized banner...`);
   const base64 = fs.readFileSync(
-    path.resolve(__dirname, "/../tmp/1500x500_final.png"),
+    path.resolve(__dirname, "./1500x500_final.png"),
     {
       encoding: "base64",
     }
@@ -38,16 +38,14 @@ const uploadBanner = async () => {
 };
 
 const createBanner = async () => {
-  const banner = await Jimp.read(path.resolve(__dirname, "/../1500x500.jpg"));
+  const banner = await Jimp.read(path.resolve(__dirname, "./1500x500.jpg"));
   // build banner
   console.info(`Adding followers...`);
   try {
     await Promise.all(
       [...Array(numberOfFollowers)].map((_, i) => {
         return new Promise(async (resolve) => {
-          const image = await Jimp.read(
-            path.resolve(__dirname, "/../tmp/${i}.png")
-          );
+          const image = await Jimp.read(path.resolve(__dirname, `./${i}.png`));
           const x = 942 + i * (widthHeightFollowerImage + 24);
           console.info(`Appending image ${i} with x=${x}`);
           banner.composite(image, x, 202);
@@ -55,15 +53,14 @@ const createBanner = async () => {
         });
       })
     );
-    await banner.writeAsync(
-      path.resolve(__dirname, "${__dirname}/../tmp/1500x500_final.png")
-    );
+    await banner.writeAsync(path.resolve(__dirname, "./1500x500_final.png"));
   } catch (err) {
     console.error(err);
   }
 };
 
 const saveAvatar = async (user: User, path: string) => {
+  console.log("path:", path);
   const roundedCorners = Buffer.from(
     '<svg><rect x="0" y="0" width="96" height="96" rx="48" ry="48"/></svg>'
   );
@@ -98,11 +95,8 @@ const getImagesOfLatestFollowers = async () => {
     });
     console.info(`Retrieving follower avatars...`);
     await Promise.all(
-      data.users.map((user) =>
-        saveAvatar(
-          user,
-          path.resolve(__dirname, "${__dirname}/../tmp/${index}.png")
-        )
+      data.users.map((user, index) =>
+        saveAvatar(user, path.resolve(__dirname, `./${index}.png`))
       )
     );
   } catch (err) {
@@ -114,8 +108,8 @@ export const handler: Handler = async () => {
   await getImagesOfLatestFollowers();
   await createBanner();
   await uploadBanner();
+
   return {
     statusCode: 200,
-    body: JSON.stringify({ status: "Twitter banner updated successfully" }),
   };
 };

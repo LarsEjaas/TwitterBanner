@@ -15,7 +15,7 @@
     <a href="https://twitter.com/LarsEjaas"><strong>Live banner on my Twitter profile »</strong></a>
     <br />
     <br />
-    <a href="https://twitter.com/LarsEjaas?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Don't forget to give me a follow @Twitter</a>
+    <a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F&ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Efollow%7Ctwgr%5ELarsEjaas&screen_name=LarsEjaas" class="twitter-follow-button" data-show-count="false">Don't forget to give me a follow @Twitter</a>
   </p>
 </div>
 
@@ -75,6 +75,34 @@ There are various places you can run a project like this, but I choose Netlify d
    npm install
    ```
 5. Create an `.env` file and add the variables listed in `.env.example` replacing the values with the keys from the API.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- LOCAL DEVELOPMENT -->
+
+## Local development
+
+Netlify CLI is a command line interface that can be used to develop and debug Netlify functions locally. To use the client install it globally:
+
+```sh
+npm install netlify-cli -g
+```
+
+Read more details about the client at [netlify](https://docs.netlify.com/cli/get-started/)
+
+You can start the client by running:
+
+```sh
+netlify dev
+```
+
+...and while the client dev environment is running from a separate terminal run the function:
+
+```sh
+netlify functions:invoke
+```
+
+to test the function locally.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
