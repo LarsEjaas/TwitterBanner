@@ -10,7 +10,7 @@
   <h3 align="center">Interactive Twitter banner</h3>
 
   <p align="center">
-    An interactive Twitter banner build in Node.js and hosted on Heroku!
+    An interactive Twitter banner build in Node.js and hosted on Netlify!
     <br />
     <a href="https://twitter.com/LarsEjaas"><strong>Live banner on my Twitter profile »</strong></a>
     <br />
@@ -46,13 +46,13 @@
 <br />
 <br />
 
-The Twitter API enables programmers to access data from their Twitter profile directly. Types of data includes: Tweets, Direct Messages, Spaces, Lists, users, and more.
+The Twitter API enables programmers to access data from their Twitter profile directly. This includes data like Tweets, Direct Messages, Spaces, Lists, users, and more.
 
 This project will leverage the API to interact with your list of followers to create an interactive banner that displays the 4 most recent followers on your Twitter profile.
 
-The banner utilizes a serverless Node.js function that pulls the 4 most recent followers once every minute. Thereafter, the function will overlay the follower's profile picture to the banner image and upload the updated banner to your profile.
+The banner utilizes a serverless Node.js function that pulls the 4 most recent followers once every hour. Thereafter, the function will overlay the follower's profile picture to the banner image and upload the updated banner to your profile.
 
-There are various places you can run a project like this, but I choose Heroku due to their generous free tier limit.
+There are various places you can run a project like this, but I choose Netlify due to a generous free tier limit and because they allow you to run scheduled functions.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
