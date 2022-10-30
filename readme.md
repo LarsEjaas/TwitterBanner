@@ -10,12 +10,12 @@
   <h3 align="center">Interactive Twitter banner</h3>
 
   <p align="center">
-    An interactive Twitter banner build in Node.js and hosted on Heroku!
+    An interactive Twitter banner build in Node.js and hosted on Netlify!
     <br />
     <a href="https://twitter.com/LarsEjaas"><strong>Live banner on my Twitter profile »</strong></a>
     <br />
     <br />
-    <a href="https://twitter.com/LarsEjaas?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Don't forget to give me a follow @Twitter</a>
+    <a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F&ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Efollow%7Ctwgr%5ELarsEjaas&screen_name=LarsEjaas" class="twitter-follow-button" data-show-count="false">Don't forget to give me a follow @Twitter</a>
   </p>
 </div>
 
@@ -42,17 +42,17 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](1500x500.jpg)
+<img src="functions/updateTwitterBanner/1500x500.jpg">
 <br />
 <br />
 
-The Twitter API enables programmers to access data from their Twitter profile directly. Types of data includes: Tweets, Direct Messages, Spaces, Lists, users, and more.
+The Twitter API enables programmers to access data from their Twitter profile directly. This includes data like Tweets, Direct Messages, Spaces, Lists, users, and more.
 
 This project will leverage the API to interact with your list of followers to create an interactive banner that displays the 4 most recent followers on your Twitter profile.
 
-The banner utilizes a serverless Node.js function that pulls the 4 most recent followers once every minute. Thereafter, the function will overlay the follower's profile picture to the banner image and upload the updated banner to your profile.
+The banner utilizes a serverless Node.js function that pulls the 4 most recent followers once every hour. Thereafter, the function will overlay the follower's profile picture to the banner image and upload the updated banner to your profile.
 
-There are various places you can run a project like this, but I choose Heroku due to their generous free tier limit.
+There are various places you can run a project like this, but I choose Netlify due to a generous free tier limit and because they allow you to run scheduled functions.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -75,6 +75,34 @@ There are various places you can run a project like this, but I choose Heroku du
    npm install
    ```
 5. Create an `.env` file and add the variables listed in `.env.example` replacing the values with the keys from the API.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- LOCAL DEVELOPMENT -->
+
+## Local development
+
+Netlify CLI is a command line interface that can be used to develop and debug Netlify functions locally. To use the client install it globally:
+
+```sh
+npm install netlify-cli -g
+```
+
+Read more details about the client at [netlify](https://docs.netlify.com/cli/get-started/)
+
+You can start the client by running:
+
+```sh
+netlify dev
+```
+
+...and while the client dev environment is running from a separate terminal run the function:
+
+```sh
+netlify functions:invoke
+```
+
+to test the function locally.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
