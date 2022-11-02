@@ -8,4 +8,4 @@
   included_files = ["functions/updateTwitterBanner/**"]
 
 [functions."updateTwitterBanner"]
-schedule = "@hourly"  
+schedule = "*/15 * * * *"  

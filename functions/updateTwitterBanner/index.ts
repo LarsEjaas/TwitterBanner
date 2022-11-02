@@ -21,12 +21,9 @@ const widthHeightFollowerImage = 96;
 
 const uploadBanner = async () => {
   console.info(`Base64 encoding finalized banner...`);
-  const base64 = fs.readFileSync(
-    path.resolve(__dirname, "./tmp/1500x500_final.png"),
-    {
-      encoding: "base64",
-    }
-  );
+  const base64 = fs.readFileSync("/tmp/1500x500_final.png", {
+    encoding: "base64",
+  });
   console.info(`Uploading to twitter...`);
   try {
     await twitterClient.accountsAndUsers.accountUpdateProfileBanner({
@@ -45,9 +42,7 @@ const createBanner = async () => {
     await Promise.all(
       [...Array(numberOfFollowers)].map((_, i) => {
         return new Promise(async (resolve) => {
-          const image = await Jimp.read(
-            path.resolve(__dirname, `./tmp/${i}.png`)
-          );
+          const image = await Jimp.read(`/tmp/${i}.png`);
           const x = 942 + i * (widthHeightFollowerImage + 24);
           console.info(`Appending image ${i} with x=${x}`);
           banner.composite(image, x, 202);
@@ -55,9 +50,7 @@ const createBanner = async () => {
         });
       })
     );
-    await banner.writeAsync(
-      path.resolve(__dirname, "./tmp/1500x500_final.png")
-    );
+    await banner.writeAsync("/tmp/1500x500_final.png");
   } catch (err) {
     console.error(err);
   }
@@ -98,9 +91,7 @@ const getImagesOfLatestFollowers = async () => {
     });
     console.info(`Retrieving follower avatars...`);
     await Promise.all(
-      data.users.map((user, index) =>
-        saveAvatar(user, path.resolve(__dirname, `./tmp/${index}.png`))
-      )
+      data.users.map((user, index) => saveAvatar(user, `/tmp/${index}.png`))
     );
   } catch (err) {
     console.error(err);
